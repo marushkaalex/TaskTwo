@@ -14,7 +14,11 @@ import java.util.regex.Pattern;
 public class TextParser {
 
     public static final String TEXT = "text.txt";
-    private static final Pattern PATTERN_WORD = Pattern.compile("([-'0-9A-z]+)([-.,:;])?");
+    private static final String GROUP_WORD = "word";
+    private static final String GROUP_PUNCTUATION = "punctuation";
+    private static final String GROUP_PARAGRAPH = "paragraph";
+    private static final Pattern PATTERN_WORD =
+            Pattern.compile("((?<word>[-'\\w]+)(?<punctuation>[ ]*[-.,:;?!])?)|(?<paragraph>)\\n");
 
     public static String getAsString(String resource) throws IOException {
         BufferedReader br = new BufferedReader(
@@ -31,7 +35,8 @@ public class TextParser {
     public static boolean readParagraph(String source, Paragraph paragraph) {
         Matcher matcher = PATTERN_WORD.matcher(source);
         while (matcher.find()) {
-            paragraph.add(readSentence(matcher));
+            if (matcher.group(GROUP_PARAGRAPH) == null)
+                paragraph.add(readSentence(matcher));
         }
         return true;
     }
@@ -45,13 +50,13 @@ public class TextParser {
     }
 
     private static boolean fillSentence(Matcher matcher, Sentence sentence) {
-        System.out.println(matcher.group());
-        if (matcher.group(2) != null) {
-            sentence.add(new Word(matcher.group(1)));
-            sentence.add(new PunctuationMark(matcher.group(2)));
-            return !matcher.group(2).equals(".");
+        if (matcher.group(GROUP_PARAGRAPH) != null) return false;
+        if (matcher.group(GROUP_PUNCTUATION) != null) {
+            sentence.add(new Word(matcher.group(GROUP_WORD)));
+            sentence.add(new PunctuationMark(matcher.group(GROUP_PUNCTUATION)));
+            return !matcher.group(GROUP_PUNCTUATION).contains(".");
         } else {
-            sentence.add(new Word(matcher.group(1)));
+            sentence.add(new Word(matcher.group(GROUP_WORD)));
             return true;
         }
     }

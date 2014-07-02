@@ -6,10 +6,10 @@
            version="3.0">
     <servlet>
         <servlet-name>Servlet</servlet-name>
-        <servlet-class>com.epam.am.Servlet</servlet-class>
+        <servlet-class>com.epam.am.servlet.Servlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Servlet</servlet-name>
-        <url-pattern>/Strings</url-pattern>
+        <url-pattern>/strings</url-pattern>
     </servlet-mapping>
 </web-app>

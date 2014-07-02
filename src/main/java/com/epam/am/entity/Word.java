@@ -35,7 +35,7 @@ public class Word extends SentenceContent {
         for (Character letter : letters) {
             sb.append(letter);
         }
-        return "Word{" +
+        return "{" +
                 sb.toString() +
                 '}';
     }

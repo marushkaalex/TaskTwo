@@ -8,7 +8,13 @@ public class PunctuationMark extends SentenceContent {
     }
 
     public PunctuationMark(String str) {
-        this.mark = str.charAt(0);
+        char tmp = '@';
+        for (int i = 0; i < str.length(); i++) {
+            if (!" ".equals(str.charAt(i))) {
+                tmp = str.charAt(i);
+            }
+        }
+        this.mark = tmp;
     }
 
     public char getMark() {
@@ -17,7 +23,7 @@ public class PunctuationMark extends SentenceContent {
 
     @Override
     public String toString() {
-        return "PunctuationMark{" +
+        return "{" +
                 mark +
                 '}';
     }
