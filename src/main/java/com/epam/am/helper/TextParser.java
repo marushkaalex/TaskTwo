@@ -39,12 +39,13 @@ public class TextParser {
     private static Sentence readSentence(Matcher matcher) {
         Sentence result = new Sentence();
         while (fillSentence(matcher, result)) {
-            matcher.find();
+            if (!matcher.find()) break;
         }
         return result;
     }
 
     private static boolean fillSentence(Matcher matcher, Sentence sentence) {
+        System.out.println(matcher.group());
         if (matcher.group(2) != null) {
             sentence.add(new Word(matcher.group(1)));
             sentence.add(new PunctuationMark(matcher.group(2)));
