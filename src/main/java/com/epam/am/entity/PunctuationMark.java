@@ -1,6 +1,6 @@
 package com.epam.am.entity;
 
-public class PunctuationMark extends SentenceContent {
+public class PunctuationMark implements SentenceContent {
     private final char mark;
 
     public PunctuationMark(char mark) {
@@ -8,13 +8,7 @@ public class PunctuationMark extends SentenceContent {
     }
 
     public PunctuationMark(String str) {
-        char tmp = '@';
-        for (int i = 0; i < str.length(); i++) {
-            if (!" ".equals(str.charAt(i))) {
-                tmp = str.charAt(i);
-            }
-        }
-        this.mark = tmp;
+        this.mark = str.charAt(0);
     }
 
     public char getMark() {
@@ -26,5 +20,10 @@ public class PunctuationMark extends SentenceContent {
         return "{" +
                 mark +
                 '}';
+    }
+
+    @Override
+    public String toOriginal() {
+        return String.valueOf(mark);
     }
 }

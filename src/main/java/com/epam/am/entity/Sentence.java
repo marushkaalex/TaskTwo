@@ -28,4 +28,12 @@ public class Sentence {
                 "words=" + words +
                 '}';
     }
+
+    public String toOriginal() {
+        StringBuilder sb = new StringBuilder();
+        for (SentenceContent word : words) {
+            sb.append(word.toOriginal());
+        }
+        return sb.toString();
+    }
 }

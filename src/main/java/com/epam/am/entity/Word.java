@@ -3,7 +3,7 @@ package com.epam.am.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Word extends SentenceContent {
+public class Word implements SentenceContent {
     private final List<Character> letters;
 
     public Word(List<Character> letters) {
@@ -38,5 +38,14 @@ public class Word extends SentenceContent {
         return "{" +
                 sb.toString() +
                 '}';
+    }
+
+    @Override
+    public String toOriginal() {
+        StringBuilder sb = new StringBuilder();
+        for (Character letter : letters) {
+            sb.append(letter);
+        }
+        return sb.toString();
     }
 }

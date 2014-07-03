@@ -1,5 +1,5 @@
 package com.epam.am.entity;
 
-public class SentenceContent {
-
+public interface SentenceContent {
+    public String toOriginal();
 }

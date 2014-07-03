@@ -1,10 +1,11 @@
 package com.epam.am.entity;
 
-public class WhiteSpace extends SentenceContent{
+public class WhiteSpace implements SentenceContent {
     private static final char space = ' ';
     private static final WhiteSpace instance = new WhiteSpace();
 
-    private WhiteSpace() {}
+    private WhiteSpace() {
+    }
 
     public static WhiteSpace getInstance() {
         return instance;
@@ -12,5 +13,15 @@ public class WhiteSpace extends SentenceContent{
 
     public static char getSpace() {
         return space;
+    }
+
+    @Override
+    public String toString() {
+        return "{ }";
+    }
+
+    @Override
+    public String toOriginal() {
+        return " ";
     }
 }
