@@ -18,7 +18,8 @@ public class TextParser {
     private static final String GROUP_PUNCTUATION = "punctuation";
     private static final String GROUP_PARAGRAPH = "paragraph";
     private static final Pattern PATTERN_WORD =
-            Pattern.compile("((?<word>[-'\\w]+)(?<punctuation>[ ]*[-.,:;?!])?)|(?<paragraph>)\\n");
+            Pattern.compile("((?<word>[-'\\w]+)(?<punctuation>[ ]*[-.,:;?!])?)|(?<paragraph>)\\n",
+                    Pattern.UNICODE_CHARACTER_CLASS);
 
     public static String getAsString(String resource) throws IOException {
         BufferedReader br = new BufferedReader(

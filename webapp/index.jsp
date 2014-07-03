@@ -4,6 +4,7 @@
 
     <html>
     <head>
+        <link rel="stylesheet" href="webjars/bootstrap/3.2.0/css/bootstrap.css">
         <title></title>
     </head>
     <body>
@@ -12,8 +13,10 @@
         <%@include file="WEB-INF/text.txt"%>
         </textarea>
         <input type="submit" value="<fmt:message key="index.submit"/>"/>
+        <button type="button" class="btn btn-default btn-lg">
+            <span class="glyphicon glyphicon-star"></span> Star
+        </button>
     </form>
-
     </body>
     </html>
 </fmt:bundle>
