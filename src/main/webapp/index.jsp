@@ -21,9 +21,7 @@
         <h1><fmt:message key="index.puttext"/></h1>
 
         <form action="${pageContext.request.contextPath}/strings" method="post">
-            <textarea name="text" rows="20" cols="100">
-                    <%--<%@include file="WEB-INF/text.txt"%>--%>
-            </textarea>
+            <textarea name="text" rows="20" cols="100"></textarea>
 
             <p><input type="submit" value="<fmt:message key="index.submit"/>" class="btn btn-default"/></p>
         </form>

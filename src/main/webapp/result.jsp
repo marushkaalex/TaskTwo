@@ -28,27 +28,19 @@
     <body>
     <div class="container">
         <a href="index.jsp">
-            <button type="button" class="btn btn-default">home</button>
+            <button name="home" type="button" class="btn btn-default">home</button>
         </a>
 
         <h1><fmt:message key="result.original"/></h1>
 
-        <div class="original_text">
-            <p>
-                <c:forEach items="${par.getSentences()}" var="item">
-                    <c:out value="${item.toOriginal()}"/>
-                </c:forEach>
-            </p>
+        <div class="original_text"><p><c:forEach items="${par.getParagraphs()}" var="item"><c:out
+                value="${item.toOriginal()}"/><br>
+        </c:forEach>
+        </p>
         </div>
         <h1><fmt:message key="result.parsed.text"/></h1>
-
-        <div>
-<pre>
-    <c:forEach items="${par.getSentences()}" var="item">
-        <c:out value="${item.toString()}"/>
-    </c:forEach>
+        <pre><c:forEach items="${par.getParagraphs()}" var="item"><c:out value="${item.toString()}"/><br></c:forEach>
 </pre>
-        </div>
     </div>
     </body>
     </html>

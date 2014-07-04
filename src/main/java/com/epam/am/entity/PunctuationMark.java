@@ -1,23 +1,23 @@
 package com.epam.am.entity;
 
 public class PunctuationMark implements SentenceContent {
-    private final char mark;
+    private final String mark;
 
     public PunctuationMark(char mark) {
-        this.mark = mark;
+        this.mark = String.valueOf(mark);
     }
 
     public PunctuationMark(String str) {
-        this.mark = str.charAt(0);
+        this.mark = str;
     }
 
-    public char getMark() {
+    public String getMark() {
         return mark;
     }
 
     @Override
     public String toString() {
-        return "{" +
+        return "p{" +
                 mark +
                 '}';
     }

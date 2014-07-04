@@ -21,4 +21,19 @@ public class Text {
     public boolean add(Paragraph paragraph) {
         return paragraphs.add(paragraph);
     }
+
+    @Override
+    public String toString() {
+        return "Text{" +
+                "paragraphs=" + paragraphs +
+                '}';
+    }
+
+    public String toOriginal() {
+        StringBuilder sb = new StringBuilder();
+        for (Paragraph paragraph : paragraphs) {
+            sb.append(paragraph.toOriginal());
+        }
+        return sb.toString();
+    }
 }

@@ -10,9 +10,6 @@ import java.util.regex.Pattern;
 
 public class TextParser {
 
-    //TODO fix "dfgdsfgsdfg.dsfgsdfgdsfsd .dsfg"
-    //TODO fix sentences don't end with dots
-
     public static final String TEXT = "text.txt";
     private static final String GROUP_WORD = "word";
     private static final String GROUP_PUNCTUATION = "punctuation";
@@ -34,13 +31,22 @@ public class TextParser {
         return sb.toString();
     }
 
-    public static boolean readParagraph(String source, Paragraph paragraph) {
+    public static Text readText(String source) {
         Matcher matcher = PATTERN.matcher(source);
+        Text result = new Text();
+        result.add(readParagraph(matcher));
+        return result;
+
+    }
+
+    public static Paragraph readParagraph(Matcher matcher) {
+        Paragraph paragraph = new Paragraph();
         while (matcher.find()) {
             if (matcher.group(GROUP_PARAGRAPH) == null)
                 paragraph.add(readSentence(matcher));
+            else return paragraph;
         }
-        return true;
+        return paragraph;
     }
 
     private static Sentence readSentence(Matcher matcher) {
@@ -63,6 +69,7 @@ public class TextParser {
         }
         if (matcher.group(GROUP_PUNCTUATION) != null) {
             sentence.add(new PunctuationMark(matcher.group(GROUP_PUNCTUATION)));
+            if (matcher.group(GROUP_PUNCTUATION).equals(".")) return false;
             return true;
         }
         return false;

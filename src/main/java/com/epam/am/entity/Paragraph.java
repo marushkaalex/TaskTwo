@@ -32,4 +32,12 @@ public class Paragraph {
                 "sentences=" + sb.toString() +
                 '}';
     }
+
+    public String toOriginal() {
+        StringBuilder sb = new StringBuilder();
+        for (Sentence sentence : sentences) {
+            sb.append(sentence.toOriginal());
+        }
+        return sb.toString();
+    }
 }

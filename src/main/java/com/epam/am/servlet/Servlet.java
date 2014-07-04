@@ -1,9 +1,12 @@
 package com.epam.am.servlet;
 
 import com.epam.am.action.ActionFactory;
-import com.epam.am.entity.Paragraph;
+import com.epam.am.entity.Text;
 import com.epam.am.helper.TextParser;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class Servlet extends javax.servlet.http.HttpServlet {
@@ -14,8 +17,15 @@ public class Servlet extends javax.servlet.http.HttpServlet {
     }
 
     protected void doGet(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
-        Paragraph paragraph = new Paragraph();
-        TextParser.readParagraph(request.getParameter("text"), paragraph);
-        response.getWriter().write(paragraph.toString());
+        Text text = TextParser.readText(request.getParameter("text"));
+        response.getWriter().write(text.toString());
+    }
+
+    @Override
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//        super.service(req, resp);
+        String redirect = ActionFactory.getAction(ActionFactory.PARSE).execute(req);
+        req.getRequestDispatcher(redirect).forward(req, resp);
+
     }
 }

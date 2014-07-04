@@ -35,7 +35,7 @@ public class Word implements SentenceContent {
         for (Character letter : letters) {
             sb.append(letter);
         }
-        return "{" +
+        return "w{" +
                 sb.toString() +
                 '}';
     }
