@@ -33,14 +33,15 @@
 
         <h1><fmt:message key="result.original"/></h1>
 
-        <div class="original_text"><p><c:forEach items="${par.getParagraphs()}" var="item"><c:out
+        <div class="original_text"><p><c:forEach items="${text.getParagraphs()}" var="item"><c:out
                 value="${item.toOriginal()}"/><br>
         </c:forEach>
         </p>
         </div>
         <h1><fmt:message key="result.parsed.text"/></h1>
-        <pre><c:forEach items="${par.getParagraphs()}" var="item"><c:out value="${item.toString()}"/><br></c:forEach>
-</pre>
+        <pre><c:out value="${text.toString()}"/></pre>
+        <pre><c:out value="${logic.sortSentencesByWordsCount(text).toString()}"/></pre>
+        <pre><c:out value="${logic.findNonRecurringWords(text).toString()}"/></pre>
     </div>
     </body>
     </html>

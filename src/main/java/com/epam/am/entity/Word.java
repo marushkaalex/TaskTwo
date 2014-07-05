@@ -3,7 +3,7 @@ package com.epam.am.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Word implements SentenceContent {
+public class Word implements SentencePart {
     private final List<Character> letters;
 
     public Word(List<Character> letters) {
@@ -11,11 +11,11 @@ public class Word implements SentenceContent {
     }
 
     public Word() {
-        letters = new ArrayList<Character>();
+        letters = new ArrayList<>();
     }
 
     public Word(String str) {
-        letters = new ArrayList<Character>();
+        letters = new ArrayList<>();
         for (int i = 0; i < str.length(); i++) {
             letters.add(new Character(str.charAt(i)));
         }
@@ -47,5 +47,31 @@ public class Word implements SentenceContent {
             sb.append(letter);
         }
         return sb.toString();
+    }
+
+    @Override
+    public Word deepClone() {
+        Word result = new Word();
+        for (Character letter : letters) {
+            result.add(letter.deepClone());
+        }
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Word word = (Word) o;
+
+        if (!letters.equals(word.letters)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return letters.hashCode();
     }
 }

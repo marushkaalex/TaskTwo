@@ -3,7 +3,7 @@ package com.epam.am.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Paragraph {
+public class Paragraph implements DeepCloneable<Paragraph> {
     private final List<Sentence> sentences;
 
     public Paragraph(List<Sentence> sentences) {
@@ -11,7 +11,7 @@ public class Paragraph {
     }
 
     public Paragraph() {
-        sentences = new ArrayList<Sentence>();
+        sentences = new ArrayList<>();
     }
 
     public List<Sentence> getSentences() {
@@ -28,7 +28,7 @@ public class Paragraph {
         for (Sentence sentence : sentences) {
             sb.append("\n" + sentence);
         }
-        return "Paragraph{" +
+        return "\n\nParagraph{" +
                 "sentences=" + sb.toString() +
                 '}';
     }
@@ -39,5 +39,31 @@ public class Paragraph {
             sb.append(sentence.toOriginal());
         }
         return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Paragraph paragraph = (Paragraph) o;
+
+        if (!sentences.equals(paragraph.sentences)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return sentences.hashCode();
+    }
+
+    @Override
+    public Paragraph deepClone() {
+        Paragraph result = new Paragraph();
+        for (Sentence sentence : sentences) {
+            result.add(sentence.deepClone());
+        }
+        return null;
     }
 }

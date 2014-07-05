@@ -16,9 +16,10 @@ public class SimpleTextParser {
     private static final String GROUP_PARAGRAPH = "par";
     private static final String GROUP_WHITESPACE = "space";
     private static final String GROUP_SENTENCE = "sentence";
+    private static final String GROUP_END = "end";
 
     private static final Pattern PATTERN_SENTENCE =
-            Pattern.compile("(?<word>\\b[-'\\w]+\\b)|(?<space> )|(?<punct>[-\":;@#$%^&*()+/\\\\,]+)",
+            Pattern.compile("(?<word>\\b[-'\\w]+\\b)|(?<space> )|(?<punct>[-\":;@#$%^&*()+/\\\\,><]+)",
                     Pattern.UNICODE_CHARACTER_CLASS);
 
     private static final Pattern PATTERN_SENTENCE_END =
@@ -62,8 +63,8 @@ public class SimpleTextParser {
                 sentence = parseSentence(sentenceMatcher.group(GROUP_SENTENCE));
             }
             if (sentence == null) sentence = new Sentence();
-            if (sentenceMatcher.group("end") != null) {
-                sentence.add(new PunctuationMark(sentenceMatcher.group("end")));
+            if (sentenceMatcher.group(GROUP_END) != null) {
+                sentence.add(new PunctuationMark(sentenceMatcher.group(GROUP_END)));
             }
             paragraph.add(sentence);
         }
