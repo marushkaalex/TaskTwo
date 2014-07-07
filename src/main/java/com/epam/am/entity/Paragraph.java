@@ -64,6 +64,6 @@ public class Paragraph implements DeepCloneable<Paragraph> {
         for (Sentence sentence : sentences) {
             result.add(sentence.deepClone());
         }
-        return null;
+        return result;
     }
 }

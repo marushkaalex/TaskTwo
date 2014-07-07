@@ -40,8 +40,14 @@
         </div>
         <h1><fmt:message key="result.parsed.text"/></h1>
         <pre><c:out value="${text.toString()}"/></pre>
+        <h1>sortSentencesByWordsCount</h1>
         <pre><c:out value="${logic.sortSentencesByWordsCount(text).toString()}"/></pre>
+        <h1>findNonRecurringWords</h1>
         <pre><c:out value="${logic.findNonRecurringWords(text).toString()}"/></pre>
+        <h1>findWordsByLength(text, 2, 5)</h1>
+        <pre><c:out value="${logic.findWordsByLength(text, 2, 5).toString()}"/></pre>
+        <h1>swapSentencesFirstAndLastWord</h1>
+        <pre><c:out value="${logic.swapSentencesFirstAndLastWord(text).toOriginal()}"/></pre>
     </div>
     </body>
     </html>

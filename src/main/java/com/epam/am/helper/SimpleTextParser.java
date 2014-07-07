@@ -19,7 +19,7 @@ public class SimpleTextParser {
     private static final String GROUP_END = "end";
 
     private static final Pattern PATTERN_SENTENCE =
-            Pattern.compile("(?<word>\\b[-'\\w]+\\b)|(?<space> )|(?<punct>[-\":;@#$%^&*()+/\\\\,><]+)",
+            Pattern.compile("(?<word>\\b[-'\\w]+\\b)|(?<space> )|(?<punct>[-\":;@#$%^&*()+/\\\\,><\\.?!]+)",
                     Pattern.UNICODE_CHARACTER_CLASS);
 
     private static final Pattern PATTERN_SENTENCE_END =
@@ -60,18 +60,15 @@ public class SimpleTextParser {
         while (sentenceMatcher.find()) {
             Sentence sentence = null;
             if (sentenceMatcher.group(GROUP_SENTENCE) != null) {
-                sentence = parseSentence(sentenceMatcher.group(GROUP_SENTENCE));
+                sentence = parseSentence(sentenceMatcher.group());
             }
             if (sentence == null) sentence = new Sentence();
-            if (sentenceMatcher.group(GROUP_END) != null) {
-                sentence.add(new PunctuationMark(sentenceMatcher.group(GROUP_END)));
-            }
             paragraph.add(sentence);
         }
         return paragraph;
     }
 
-    private static Sentence parseSentence(String str) {
+    public static Sentence parseSentence(String str) {
         Matcher matcher = PATTERN_SENTENCE.matcher(str);
         Sentence result = new Sentence();
         while (matcher.find()) {

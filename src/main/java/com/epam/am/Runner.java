@@ -1,6 +1,8 @@
 package com.epam.am;
 
-import com.epam.am.entity.Word;
+import com.epam.am.entity.Sentence;
+import com.epam.am.helper.SimpleTextParser;
+import com.epam.am.helper.TextLogic;
 
 import java.io.IOException;
 
@@ -8,8 +10,8 @@ import java.io.IOException;
 //TODO 1
 //TODO 2 X
 //TODO 3 X
-//TODO 4
-//TODO 5
+//TODO 4 X
+//TODO 5 X
 //TODO 6
 //TODO 7
 //TODO 8
@@ -25,8 +27,10 @@ import java.io.IOException;
 public class Runner {
     public static void main(String[] args) throws IOException {
 //        System.out.println(SimpleTextParser.parseText(SimpleTextParser.getAsString(SimpleTextParser.TEXT)));
-        Word w1 = new Word("word");
-        Word w2 = new Word("word");
-        System.out.println(w1.equals(w2));
+        TextLogic textLogic = new TextLogic();
+        Sentence sentence = SimpleTextParser.parseSentence("The sentence, that has the first and the last words.");
+        System.out.println(sentence.toOriginal());
+        textLogic.swapFirtsAndLastWord(sentence);
+        System.out.println(sentence.toOriginal());
     }
 }

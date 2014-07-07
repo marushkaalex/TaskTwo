@@ -21,8 +21,20 @@ public class Word implements SentencePart {
         }
     }
 
+    public int length() {
+        return letters.size();
+    }
+
     public List<Character> getLetters() {
         return letters;
+    }
+
+    public String getAsString() {
+        StringBuilder sb = new StringBuilder();
+        for (Character letter : letters) {
+            sb.append(letter);
+        }
+        return sb.toString();
     }
 
     public boolean add(Character character) {
@@ -65,13 +77,17 @@ public class Word implements SentencePart {
 
         Word word = (Word) o;
 
-        if (!letters.equals(word.letters)) return false;
-
+//        if (!letters.equals(word.letters)) return false;
+        if (!ignoreCaseEquals(word)) return false;
         return true;
     }
 
     @Override
     public int hashCode() {
         return letters.hashCode();
+    }
+
+    public boolean ignoreCaseEquals(Word word) {
+        return getAsString().toLowerCase().equals(word.getAsString().toLowerCase());
     }
 }
