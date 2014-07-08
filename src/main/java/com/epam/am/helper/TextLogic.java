@@ -1,5 +1,6 @@
 package com.epam.am.helper;
 
+import com.epam.am.entity.Character;
 import com.epam.am.entity.*;
 
 import java.util.*;
@@ -27,7 +28,7 @@ public class TextLogic {
      * @return non-recurring words
      */
     public List<Word> findNonRecurringWords(Text text) {
-        List<Sentence> sentences = text.getAsParagraph().getSentences();
+        List<Sentence> sentences = getAsParagraph(text).getSentences();
         List<Word> result = new ArrayList<>();
         if (sentences.size() == 0) return result;
         List<Word> firstSentence = sentences.get(0).getWords();
@@ -45,6 +46,8 @@ public class TextLogic {
         }
         return false;
     }
+
+    //4
 
     /**
      * @param text         source text
@@ -65,15 +68,13 @@ public class TextLogic {
         return result;
     }
 
-    //4
-
     /**
      * @param text         source text
      * @param sentenceType use constants from TextLogic.SentenceType class
      * @return list of sentences of the required type
      */
     public List<Sentence> findSentencesOfType(Text text, int sentenceType) {
-        List<Sentence> source = text.getAsParagraph().getSentences();
+        List<Sentence> source = getAsParagraph(text).getSentences();
         List<Sentence> result = new ArrayList<>();
         StringBuilder regex = new StringBuilder();
 
@@ -111,13 +112,13 @@ public class TextLogic {
         Text result = text.deepClone();
         for (Paragraph paragraph : result.getParagraphs()) {
             for (Sentence sentence : paragraph.getSentences()) {
-                swapFirtsAndLastWord(sentence);
+                swapFirstAndLastWord(sentence);
             }
         }
         return result;
     }
 
-    public void swapFirtsAndLastWord(Sentence sentence) {
+    public void swapFirstAndLastWord(Sentence sentence) {
         List<SentencePart> list = sentence.getSentenceParts();
         int firstWord = 0;
         int lastWord = list.size() - 1;
@@ -138,5 +139,69 @@ public class TextLogic {
 
         private SentenceType() {
         }
+    }
+
+    //6
+    public Paragraph getWordsSortedByLettersAsParagraph(Text text) {
+        List<Word> words = getWords(text);
+        sortWordsByLetters(words);
+        Character firstLetter = null;
+        Word word;
+        Sentence sentence = null;
+        Paragraph result = new Paragraph();
+        for (int i = 0; i < words.size(); i++) {
+            word = words.get(i);
+            if (!word.getLetters().get(0).toLowerCase().equals(firstLetter)) {
+                firstLetter = words.get(i).getLetters().get(0).toLowerCase();
+                sentence = new Sentence();
+                result.add(sentence);
+                sentence.add(word);
+            } else {
+                sentence.add(word);
+            }
+        }
+        return result;
+    }
+
+    public List<Word> getWords(Text text) {
+        List<Sentence> sentences = getAsParagraph(text).getSentences();
+        List<Word> words = new ArrayList<>();
+        for (Sentence sentence : sentences) {
+            words.addAll(sentence.getWords());
+        }
+        return words;
+    }
+
+    public void sortWordsByLetters(List<Word> list) {
+        Collections.sort(list);
+    }
+
+    //7
+    public void sortWordsByVowelsCount(List<Word> words) {
+        Collections.sort(words, (w1, w2) -> w1.vowelPerLetter() == w2.vowelPerLetter()
+                ? 0 : w1.vowelPerLetter() > w2.vowelPerLetter() ? 1 : -1);
+    }
+
+    public Paragraph getAsParagraph(Text text) {
+        Paragraph result = new Paragraph();
+        for (Paragraph paragraph : text.getParagraphs()) {
+            for (Sentence sentence : paragraph.getSentences()) {
+                result.add(sentence);
+            }
+        }
+        return result;
+    }
+
+    public Sentence getWordsAsSentence(List<Word> words) {
+        Sentence result = new Sentence();
+        for (Word word : words) {
+            result.add(word);
+        }
+        return result;
+    }
+
+    //8
+    public void sortWordsAlphabeticallyBySecondLetter(boolean isFirstLetterVoewl, List<Word> list) {
+
     }
 }

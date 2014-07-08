@@ -62,14 +62,4 @@ public class Text implements DeepCloneable<Text> {
         }
         return result;
     }
-
-    public Paragraph getAsParagraph() {
-        Paragraph result = new Paragraph();
-        for (Paragraph paragraph : paragraphs) {
-            for (Sentence sentence : paragraph.getSentences()) {
-                result.add(sentence);
-            }
-        }
-        return result;
-    }
 }

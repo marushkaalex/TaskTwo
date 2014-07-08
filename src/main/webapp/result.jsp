@@ -48,6 +48,12 @@
         <pre><c:out value="${logic.findWordsByLength(text, 2, 5).toString()}"/></pre>
         <h1>swapSentencesFirstAndLastWord</h1>
         <pre><c:out value="${logic.swapSentencesFirstAndLastWord(text).toOriginal()}"/></pre>
+        <h1>getWordsSortedByLettersAsParagraph</h1>
+        <pre><c:out value="${logic.getWordsSortedByLettersAsParagraph(text)}"/></pre>
+        <h1>sortWordsByVowelsCount</h1>
+        <c:set var="words" value="${logic.getWords(text)}" scope="session"/>
+            ${logic.sortWordsByVowelsCount(words)}
+        <pre><c:out value="${words}"/></pre>
     </div>
     </body>
     </html>

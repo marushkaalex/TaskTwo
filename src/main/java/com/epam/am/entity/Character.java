@@ -1,6 +1,9 @@
 package com.epam.am.entity;
 
-public class Character implements DeepCloneable<Character> {
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Character implements DeepCloneable<Character>, Comparable<Character> {
     private final char character;
 
     public Character(char character) {
@@ -35,5 +38,29 @@ public class Character implements DeepCloneable<Character> {
 
     public Character deepClone() {
         return this;
+    }
+
+    public boolean isLowerCase() {
+        return java.lang.Character.isLowerCase(character);
+    }
+
+    public Character toLowerCase() {
+        return isLowerCase() ? this : new Character(java.lang.Character.toLowerCase(character));
+    }
+
+    @Override
+    public int compareTo(Character o) {
+        return character == o.character ? 0 : character > o.character ? 1 : -1;
+    }
+
+    /**
+     * checks only English and Russian languages
+     *
+     * @return true if vowel, false if consonant
+     */
+    public boolean isVowel() {
+        Matcher matcher = Pattern.compile("[aiuoeуеыаоэяию]", Pattern.UNICODE_CHARACTER_CLASS)
+                .matcher(String.valueOf(character).toLowerCase());
+        return matcher.matches();
     }
 }

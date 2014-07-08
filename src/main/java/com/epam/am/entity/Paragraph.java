@@ -66,4 +66,10 @@ public class Paragraph implements DeepCloneable<Paragraph> {
         }
         return result;
     }
+
+    public Text asText() {
+        Text result = new Text();
+        result.add(this);
+        return result;
+    }
 }
