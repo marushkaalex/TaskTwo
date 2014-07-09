@@ -1,5 +1,7 @@
 package com.epam.am;
 
+import com.epam.am.entity.Text;
+import com.epam.am.helper.SimpleTextParser;
 import com.epam.am.helper.TextLogic;
 
 import java.io.IOException;
@@ -12,9 +14,9 @@ import java.io.IOException;
 //TODO 5 X
 //TODO 6 X
 //TODO 7 X
-//TODO 8
-//TODO 9
-//TODO 10
+//TODO 8 X
+//TODO 9 X
+//TODO 10 X
 //TODO 11
 //TODO 12
 //TODO 13
@@ -26,10 +28,13 @@ public class Runner {
     public static void main(String[] args) throws IOException {
 //        logic.sortWordsByVowelsCount(logic.getWords(text));
         TextLogic logic = new TextLogic();
-//        Text text = SimpleTextParser.parseText("Жестокий, никогда не знавший любви, сирота Жан-Батист Гренуй настоящих успехов достиг лишь на одном поприще - среди парфюмеров ему никогда не было равных. По его духам сходит с ума весь высший свет, не подозревая о том, какой страшной ценой будет получен последний, идеальный аромат.");
-//        List<Word> words = logic.getWords(text);
-//        System.out.println(words);
-//        logic.sortWordsByVowelsCount(words);
-//        System.out.println(words);
+        Text text = SimpleTextParser.parseText("Жестокий, никогда не знавший любви, сирота Жан-Батист Гренуй настоящих успехов достиг лишь на одном поприще - среди парфюмеров ему никогда не было равных. По его духам сходит с ума весь высший свет, не подозревая о том, какой страшной ценой будет получен последний, идеальный аромат.");
+        System.out.println(logic.countWordsUsages(text, "Слол", "никогда", "о", "o"));
+//        TreeMap<String, Integer> a = new TreeMap<>(new Comparator<Integer>() {
+//            @Override
+//            public int compare(Integer o1, Integer o2) {
+//                return 0;
+//            }
+//        });
     }
 }

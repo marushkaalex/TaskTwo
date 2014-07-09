@@ -5,9 +5,11 @@ import java.util.regex.Pattern;
 
 public class Character implements DeepCloneable<Character>, Comparable<Character> {
     private final char character;
+    private boolean isVowel;
 
     public Character(char character) {
         this.character = character;
+        checkIsVowel();
     }
 
     public char getCharacter() {
@@ -59,8 +61,12 @@ public class Character implements DeepCloneable<Character>, Comparable<Character
      * @return true if vowel, false if consonant
      */
     public boolean isVowel() {
+        return isVowel;
+    }
+
+    private void checkIsVowel() {
         Matcher matcher = Pattern.compile("[aiuoeуеыаоэяию]", Pattern.UNICODE_CHARACTER_CLASS)
                 .matcher(String.valueOf(character).toLowerCase());
-        return matcher.matches();
+        isVowel = matcher.matches();
     }
 }

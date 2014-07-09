@@ -52,8 +52,18 @@
         <pre><c:out value="${logic.getWordsSortedByLettersAsParagraph(text)}"/></pre>
         <h1>sortWordsByVowelsCount</h1>
         <c:set var="words" value="${logic.getWords(text)}" scope="session"/>
-            ${logic.sortWordsByVowelsCount(words)}
+        <c:set var="vowelWords" value="${logic.getWordsBeginningWith(true, words)}" scope="session"/>
+    ${logic.sortWordsByVowelsCount(words)}
+            ${logic.sortWordsAlphabeticallyBySecondLetter(true, vowelWords)}
         <pre><c:out value="${words}"/></pre>
+        <h1>sortWordsAlphabeticallyBySecondLetter</h1>
+        <pre><c:out value="${vowelWords}"/></pre>
+        <h1>sortByLetterPerWord('а')</h1>
+            ${logic.sortByLetterPerWord('а', words)}
+        <pre><c:out value="${words}"/></pre>
+        <h1>countWordsUsages</h1>
+        <pre><c:out value="${logic.countWordsUsages(text, \"не\", \"о\", \"по\")}"/></pre>
+
     </div>
     </body>
     </html>

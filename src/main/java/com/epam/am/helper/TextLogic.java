@@ -22,6 +22,7 @@ public class TextLogic {
     }
 
     //3
+
     /**
      * Finds only first sentence non-recurring words
      *
@@ -112,6 +113,7 @@ public class TextLogic {
         Text result = text.deepClone();
         for (Paragraph paragraph : result.getParagraphs()) {
             for (Sentence sentence : paragraph.getSentences()) {
+                System.out.println(sentence.toOriginal());
                 swapFirstAndLastWord(sentence);
             }
         }
@@ -129,16 +131,6 @@ public class TextLogic {
             lastWord--;
         }
         Collections.swap(list, firstWord, lastWord);
-    }
-
-    public static class SentenceType {
-        public static final int ALL = 0;
-        public static final int DECLARATIVE = 1;
-        public static final int INTERROGATIVE = 2;
-        public static final int IMPERATIVE_EXCLAMATORY = 3;
-
-        private SentenceType() {
-        }
     }
 
     //6
@@ -179,7 +171,7 @@ public class TextLogic {
     //7
     public void sortWordsByVowelsCount(List<Word> words) {
         Collections.sort(words, (w1, w2) -> w1.vowelPerLetter() == w2.vowelPerLetter()
-                ? 0 : w1.vowelPerLetter() > w2.vowelPerLetter() ? 1 : -1);
+                ? 0 : w1.vowelPerLetter() > w2.vowelPerLetter() ? -1 : 1);
     }
 
     public Paragraph getAsParagraph(Text text) {
@@ -201,7 +193,104 @@ public class TextLogic {
     }
 
     //8
-    public void sortWordsAlphabeticallyBySecondLetter(boolean isFirstLetterVoewl, List<Word> list) {
+    public void sortWordsAlphabeticallyBySecondLetter(boolean isFirstLetterVowel, List<Word> list) {
+        Collections.sort(list, (w1, w2) -> {
+            Character c1 = w1.new WordIterator().nextLetter(!isFirstLetterVowel);
+            Character c2 = w2.new WordIterator().nextLetter(!isFirstLetterVowel);
+            if (c1 == null && c2 == null) return 0;
+            if (c1 == null) return -1;
+            if (c2 == null) return 1;
+            return c1.compareTo(c2);
+        });
+    }
 
+    public List<Word> getWordsBeginningWith(boolean isFirstLetterVowel, List<Word> list) {
+        List<Word> result = new ArrayList<>();
+        for (Word word : list) {
+            if (word.getLetters().get(0).isVowel() == isFirstLetterVowel) {
+                result.add(word);
+            }
+        }
+        return result;
+    }
+
+    //9
+    public void sortByLetterPerWord(Character letter, List<Word> words) {
+        Collections.sort(words, (w1, w2) -> {
+            float w1count = calculateLetterPerWord(letter, w1);
+            float w2count = calculateLetterPerWord(letter, w2);
+            return w1count == w2count ? w1.compareTo(w2) : w1count > w2count ? -1 : 1;
+        });
+    }
+
+    public void sortByLetterPerWord(char c, List<Word> words) {
+        sortByLetterPerWord(new Character(c), words);
+    }
+
+    public float calculateLetterPerWord(Character letter, Word word) {
+        int letterCount = 0;
+        for (Character character : word) {
+            if (letter.equals(character)) letterCount++;
+        }
+        return (float) letterCount / word.length();
+    }
+
+    //10
+    public List<String> countWordsUsages(Text text, List<Word> words) {
+        class WordCountEntry implements Comparable<WordCountEntry> {
+            private final Word word;
+            private int count;
+
+            WordCountEntry(Word word, int count) {
+                this.word = word;
+                this.count = count;
+            }
+
+            @Override
+            public int compareTo(WordCountEntry o) {
+                return -Integer.compare(count, o.count);
+            }
+
+            @Override
+            public String toString() {
+                return "{" + word.toOriginal() + " : " + count + "}";
+            }
+        }
+
+        List<Word> textWords = getWords(text);
+        List<WordCountEntry> entries = new ArrayList<>();
+        for (Word word : words) {
+            WordCountEntry entry = new WordCountEntry(word, 0);
+            for (Word textWord : textWords) {
+                if (textWord.equals(word)) entry.count++;
+            }
+            entries.add(entry);
+        }
+
+        Collections.sort(entries);
+
+        List<String> result = new ArrayList<>();
+        for (WordCountEntry entry : entries) {
+            result.add(entry.toString());
+        }
+        return result;
+    }
+
+    public List<String> countWordsUsages(Text text, String... words) {
+        List<Word> list = new ArrayList<>();
+        for (String word : words) {
+            list.add(new Word(word));
+        }
+        return countWordsUsages(text, list);
+    }
+
+    public static class SentenceType {
+        public static final int ALL = 0;
+        public static final int DECLARATIVE = 1;
+        public static final int INTERROGATIVE = 2;
+        public static final int IMPERATIVE_EXCLAMATORY = 3;
+
+        private SentenceType() {
+        }
     }
 }

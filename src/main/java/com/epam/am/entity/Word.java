@@ -1,9 +1,10 @@
 package com.epam.am.entity;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-public class Word implements SentencePart, Comparable<Word> {
+public class Word implements SentencePart, Comparable<Word>, Iterable<Character> {
     private final List<Character> letters;
     private boolean isLow = true;
     private float vowelPerLetter;
@@ -43,7 +44,7 @@ public class Word implements SentencePart, Comparable<Word> {
         return sb.toString();
     }
 
-    public void add(Character character) {
+    private void add(Character character) {
         letters.add(character);
         calculateVowelPerLetter();
     }
@@ -140,5 +141,65 @@ public class Word implements SentencePart, Comparable<Word> {
             }
         }
         vowelPerLetter = (float) vowels / letters.size();
+    }
+
+    @Override
+    public Iterator<Character> iterator() {
+        return new WordIterator();
+    }
+
+    public class WordIterator implements Iterator<Character> {
+        private int currentIndex;
+
+        @Override
+        public boolean hasNext() {
+            return currentIndex != letters.size();
+        }
+
+        @Override
+        public Character next() {
+            return letters.get(currentIndex++);
+        }
+
+        public boolean hasNextVowel() {
+
+            if (currentIndex == letters.size()) return false;
+            for (int i = currentIndex; i < letters.size(); i++) {
+                if (letters.get(i).isVowel()) return true;
+            }
+            return false;
+        }
+
+        public Character nextVowel() {
+            for (int i = currentIndex; i < letters.size(); i++) {
+                if (letters.get(i).isVowel()) {
+                    currentIndex = i + 1;
+                    return letters.get(i);
+                }
+            }
+            return null;
+        }
+
+        public boolean hasNextConsonant() {
+            if (currentIndex == letters.size()) return false;
+            for (int i = currentIndex; i < letters.size(); i++) {
+                if (!letters.get(i).isVowel()) return true;
+            }
+            return false;
+        }
+
+        public Character nextConsonant() {
+            for (int i = currentIndex; i < letters.size(); i++) {
+                if (!letters.get(i).isVowel()) {
+                    currentIndex = i + 1;
+                    return letters.get(i);
+                }
+            }
+            return null;
+        }
+
+        public Character nextLetter(boolean isVowel) {
+            return isVowel ? nextVowel() : nextConsonant();
+        }
     }
 }
