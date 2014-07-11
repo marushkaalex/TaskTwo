@@ -1,8 +1,8 @@
 package com.epam.am.action;
 
 import com.epam.am.entity.Text;
-import com.epam.am.helper.SimpleTextParser;
 import com.epam.am.helper.TextLogic;
+import com.epam.am.parser.SimpleTextParser;
 
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;

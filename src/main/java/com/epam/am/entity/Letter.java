@@ -3,11 +3,11 @@ package com.epam.am.entity;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Character implements DeepCloneable<Character>, Comparable<Character> {
+public class Letter implements TextPart, DeepCloneable<Letter>, Comparable<Letter> {
     private final char character;
     private boolean isVowel;
 
-    public Character(char character) {
+    public Letter(char character) {
         this.character = character;
         checkIsVowel();
     }
@@ -26,9 +26,9 @@ public class Character implements DeepCloneable<Character>, Comparable<Character
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Character character1 = (Character) o;
+        Letter letter1 = (Letter) o;
 
-        if (character != character1.character) return false;
+        if (character != letter1.character) return false;
 
         return true;
     }
@@ -38,7 +38,7 @@ public class Character implements DeepCloneable<Character>, Comparable<Character
         return (int) character;
     }
 
-    public Character deepClone() {
+    public Letter deepClone() {
         return this;
     }
 
@@ -46,12 +46,12 @@ public class Character implements DeepCloneable<Character>, Comparable<Character
         return java.lang.Character.isLowerCase(character);
     }
 
-    public Character toLowerCase() {
-        return isLowerCase() ? this : new Character(java.lang.Character.toLowerCase(character));
+    public Letter toLowerCase() {
+        return isLowerCase() ? this : new Letter(java.lang.Character.toLowerCase(character));
     }
 
     @Override
-    public int compareTo(Character o) {
+    public int compareTo(Letter o) {
         return character == o.character ? 0 : character > o.character ? 1 : -1;
     }
 
@@ -68,5 +68,10 @@ public class Character implements DeepCloneable<Character>, Comparable<Character
         Matcher matcher = Pattern.compile("[aiuoeуеыаоэяию]", Pattern.UNICODE_CHARACTER_CLASS)
                 .matcher(String.valueOf(character).toLowerCase());
         isVowel = matcher.matches();
+    }
+
+    @Override
+    public String toOriginal() {
+        return String.valueOf(character);
     }
 }

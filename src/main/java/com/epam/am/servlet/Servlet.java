@@ -1,8 +1,6 @@
 package com.epam.am.servlet;
 
 import com.epam.am.action.ActionFactory;
-import com.epam.am.entity.Text;
-import com.epam.am.helper.TextParser;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -17,8 +15,6 @@ public class Servlet extends javax.servlet.http.HttpServlet {
     }
 
     protected void doGet(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
-        Text text = TextParser.readText(request.getParameter("text"));
-        response.getWriter().write(text.toString());
     }
 
     @Override

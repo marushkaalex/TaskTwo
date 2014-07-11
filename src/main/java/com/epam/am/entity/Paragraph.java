@@ -1,41 +1,39 @@
 package com.epam.am.entity;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class Paragraph implements DeepCloneable<Paragraph> {
-    private final List<Sentence> sentences;
+public class Paragraph extends AbstractCompoundText<Sentence> implements TextPart, DeepCloneable<Paragraph> {
 
-    public Paragraph(List<Sentence> sentences) {
-        this.sentences = sentences;
+    public Paragraph(List<Sentence> components) {
+        super(components);
     }
 
     public Paragraph() {
-        sentences = new ArrayList<>();
+        super();
     }
 
     public List<Sentence> getSentences() {
-        return sentences;
+        return components;
     }
 
     public boolean add(Sentence sentence) {
-        return sentences.add(sentence);
+        return components.add(sentence);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (Sentence sentence : sentences) {
+        for (Sentence sentence : components) {
             sb.append("\n" + sentence);
         }
         return "\n\nParagraph{" +
-                "sentences=" + sb.toString() +
+                "components=" + sb.toString() +
                 '}';
     }
 
     public String toOriginal() {
         StringBuilder sb = new StringBuilder();
-        for (Sentence sentence : sentences) {
+        for (Sentence sentence : components) {
             sb.append(sentence.toOriginal());
         }
         return sb.toString();
@@ -48,20 +46,20 @@ public class Paragraph implements DeepCloneable<Paragraph> {
 
         Paragraph paragraph = (Paragraph) o;
 
-        if (!sentences.equals(paragraph.sentences)) return false;
+        if (!components.equals(paragraph.components)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return sentences.hashCode();
+        return components.hashCode();
     }
 
     @Override
     public Paragraph deepClone() {
         Paragraph result = new Paragraph();
-        for (Sentence sentence : sentences) {
+        for (Sentence sentence : components) {
             result.add(sentence.deepClone());
         }
         return result;

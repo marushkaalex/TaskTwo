@@ -1,58 +1,56 @@
 package com.epam.am.entity;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class Word implements SentencePart, Comparable<Word>, Iterable<Character> {
-    private final List<Character> letters;
+public class Word extends AbstractCompoundText<Letter> implements SentencePart, Comparable<Word>, Iterable<Letter> {
     private boolean isLow = true;
     private float vowelPerLetter;
 
-    public Word(List<Character> letters) {
-        this.letters = letters;
+    public Word(List<Letter> letters) {
+        super(letters);
         calculateVowelPerLetter();
     }
 
     public Word() {
-        letters = new ArrayList<>();
+        super();
     }
 
     public Word(String str) {
-        letters = new ArrayList<>();
+        super();
         for (int i = 0; i < str.length(); i++) {
-            Character character = new Character(str.charAt(i));
-            if (!character.isLowerCase()) isLow = false;
-            letters.add(character);
+            Letter letter = new Letter(str.charAt(i));
+            if (!letter.isLowerCase()) isLow = false;
+            components.add(letter);
         }
         calculateVowelPerLetter();
     }
 
     public int length() {
-        return letters.size();
+        return components.size();
     }
 
-    public List<Character> getLetters() {
-        return letters;
+    public List<Letter> getLetters() {
+        return components;
     }
 
     public String getAsString() {
         StringBuilder sb = new StringBuilder();
-        for (Character letter : letters) {
+        for (Letter letter : components) {
             sb.append(letter);
         }
         return sb.toString();
     }
 
-    private void add(Character character) {
-        letters.add(character);
+    private void addLetter(Letter letter) {
+        components.add(letter);
         calculateVowelPerLetter();
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (Character letter : letters) {
+        for (Letter letter : components) {
             sb.append(letter);
         }
         return "w{" +
@@ -63,7 +61,7 @@ public class Word implements SentencePart, Comparable<Word>, Iterable<Character>
     @Override
     public String toOriginal() {
         StringBuilder sb = new StringBuilder();
-        for (Character letter : letters) {
+        for (Letter letter : components) {
             sb.append(letter);
         }
         return sb.toString();
@@ -72,7 +70,7 @@ public class Word implements SentencePart, Comparable<Word>, Iterable<Character>
     @Override
     public Word deepClone() {
         Word result = new Word();
-        for (Character letter : letters) {
+        for (Letter letter : components) {
             result.add(letter.deepClone());
         }
         return result;
@@ -92,7 +90,7 @@ public class Word implements SentencePart, Comparable<Word>, Iterable<Character>
 
     @Override
     public int hashCode() {
-        return letters.hashCode();
+        return components.hashCode();
     }
 
     public boolean ignoreCaseEquals(Word word) {
@@ -105,9 +103,9 @@ public class Word implements SentencePart, Comparable<Word>, Iterable<Character>
 
     public void toLowerCase() {
         if (isLow) return;
-        for (int i = 0; i < letters.size(); i++) {
-            if (letters.get(i).isLowerCase()) continue;
-            letters.set(i, letters.get(i).toLowerCase());
+        for (int i = 0; i < components.size(); i++) {
+            if (components.get(i).isLowerCase()) continue;
+            components.set(i, components.get(i).toLowerCase());
         }
         isLow = true;
     }
@@ -116,7 +114,7 @@ public class Word implements SentencePart, Comparable<Word>, Iterable<Character>
     public int compareTo(Word o) {
         int max = length() <= o.length() ? length() : o.length();
         for (int i = 0; i < max; i++) {
-            int compare = letters.get(i).toLowerCase().compareTo(o.letters.get(i).toLowerCase());
+            int compare = components.get(i).toLowerCase().compareTo(o.components.get(i).toLowerCase());
             switch (compare) {
                 case 0:
                     continue;
@@ -135,70 +133,70 @@ public class Word implements SentencePart, Comparable<Word>, Iterable<Character>
 
     public void calculateVowelPerLetter() {
         int vowels = 0;
-        for (Character letter : letters) {
+        for (Letter letter : components) {
             if (letter.isVowel()) {
                 vowels++;
             }
         }
-        vowelPerLetter = (float) vowels / letters.size();
+        vowelPerLetter = (float) vowels / components.size();
     }
 
     @Override
-    public Iterator<Character> iterator() {
+    public Iterator<Letter> iterator() {
         return new WordIterator();
     }
 
-    public class WordIterator implements Iterator<Character> {
+    public class WordIterator implements Iterator<Letter> {
         private int currentIndex;
 
         @Override
         public boolean hasNext() {
-            return currentIndex != letters.size();
+            return currentIndex != components.size();
         }
 
         @Override
-        public Character next() {
-            return letters.get(currentIndex++);
+        public Letter next() {
+            return components.get(currentIndex++);
         }
 
         public boolean hasNextVowel() {
 
-            if (currentIndex == letters.size()) return false;
-            for (int i = currentIndex; i < letters.size(); i++) {
-                if (letters.get(i).isVowel()) return true;
+            if (currentIndex == components.size()) return false;
+            for (int i = currentIndex; i < components.size(); i++) {
+                if (components.get(i).isVowel()) return true;
             }
             return false;
         }
 
-        public Character nextVowel() {
-            for (int i = currentIndex; i < letters.size(); i++) {
-                if (letters.get(i).isVowel()) {
+        public Letter nextVowel() {
+            for (int i = currentIndex; i < components.size(); i++) {
+                if (components.get(i).isVowel()) {
                     currentIndex = i + 1;
-                    return letters.get(i);
+                    return components.get(i);
                 }
             }
             return null;
         }
 
         public boolean hasNextConsonant() {
-            if (currentIndex == letters.size()) return false;
-            for (int i = currentIndex; i < letters.size(); i++) {
-                if (!letters.get(i).isVowel()) return true;
+            if (currentIndex == components.size()) return false;
+            for (int i = currentIndex; i < components.size(); i++) {
+                if (!components.get(i).isVowel()) return true;
             }
             return false;
         }
 
-        public Character nextConsonant() {
-            for (int i = currentIndex; i < letters.size(); i++) {
-                if (!letters.get(i).isVowel()) {
+        public Letter nextConsonant() {
+            for (int i = currentIndex; i < components.size(); i++) {
+                if (!components.get(i).isVowel()) {
                     currentIndex = i + 1;
-                    return letters.get(i);
+                    return components.get(i);
                 }
             }
             return null;
         }
 
-        public Character nextLetter(boolean isVowel) {
+        public Letter nextLetter(boolean isVowel) {
             return isVowel ? nextVowel() : nextConsonant();
         }
     }

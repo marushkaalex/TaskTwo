@@ -3,24 +3,23 @@ package com.epam.am.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Sentence implements DeepCloneable<Sentence> {
-    private final List<SentencePart> sentenceParts;
+public class Sentence extends AbstractCompoundText<SentencePart> implements TextPart, DeepCloneable<Sentence> {
 
-    public Sentence(List<SentencePart> sentenceParts) {
-        this.sentenceParts = sentenceParts;
+    public Sentence(List<SentencePart> components) {
+        super(components);
     }
 
     public Sentence() {
-        sentenceParts = new ArrayList<>();
+        super();
     }
 
     public List<SentencePart> getSentenceParts() {
-        return sentenceParts;
+        return components;
     }
 
     public List<Word> getWords() {
         List<Word> result = new ArrayList<>();
-        for (SentencePart sentencePart : sentenceParts) {
+        for (SentencePart sentencePart : components) {
             if (sentencePart.getClass() == Word.class) {
                 result.add((Word) sentencePart);
             }
@@ -29,19 +28,19 @@ public class Sentence implements DeepCloneable<Sentence> {
     }
 
     public boolean add(SentencePart word) {
-        return sentenceParts.add(word);
+        return components.add(word);
     }
 
     @Override
     public String toString() {
         return "Sentence{" +
-                "sentenceParts=" + sentenceParts +
+                "components=" + components +
                 '}';
     }
 
     public String toOriginal() {
         StringBuilder sb = new StringBuilder();
-        for (SentencePart word : sentenceParts) {
+        for (SentencePart word : components) {
             sb.append(word.toOriginal());
         }
         return sb.toString();
@@ -54,20 +53,20 @@ public class Sentence implements DeepCloneable<Sentence> {
 
         Sentence sentence = (Sentence) o;
 
-        if (!sentenceParts.equals(sentence.sentenceParts)) return false;
+        if (!components.equals(sentence.components)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return sentenceParts.hashCode();
+        return components.hashCode();
     }
 
     @Override
     public Sentence deepClone() {
         Sentence result = new Sentence();
-        for (SentencePart word : sentenceParts) {
+        for (SentencePart word : components) {
             result.add(word.deepClone());
         }
         return result;

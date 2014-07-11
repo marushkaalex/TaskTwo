@@ -1,6 +1,7 @@
-package com.epam.am.helper;
+package com.epam.am.parser;
 
 import com.epam.am.entity.*;
+import com.epam.am.helper.PropertyManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,30 +11,32 @@ import java.util.regex.Pattern;
 
 public class SimpleTextParser {
 
-    public static final String TEXT = "text.txt";
-    private static final String GROUP_WORD = "word";
-    private static final String GROUP_PUNCTUATION = "punct";
-    private static final String GROUP_PARAGRAPH = "par";
-    private static final String GROUP_WHITESPACE = "space";
-    private static final String GROUP_SENTENCE = "sentence";
-    private static final String GROUP_END = "end";
+    private static final PropertyManager MANAGER = PropertyManager.getManager(PropertyManager.REGEX);
 
-    private static final Pattern PATTERN_SENTENCE =
-            Pattern.compile("(?<word>\\b[-'\\w]+\\b)|(?<space> )|(?<punct>[-\":;@#$%^&*()+/\\\\,><\\.?!]+)",
+    public static final String TEXT = "text.txt";
+    private static final String GROUP_WORD = MANAGER.getProperty("group.word");
+    private static final String GROUP_PUNCTUATION = MANAGER.getProperty("group.punct");
+    private static final String GROUP_PARAGRAPH = MANAGER.getProperty("group.par");
+    private static final String GROUP_WHITESPACE = MANAGER.getProperty("group.space");
+    private static final String GROUP_SENTENCE = MANAGER.getProperty("group.sentence");
+    private static final String GROUP_END = MANAGER.getProperty("group.end");
+
+    private static final Pattern PATTERN_SENTENCE_PARTS =
+            Pattern.compile(MANAGER.getProperty("pattern.sentence.parts"),
                     Pattern.UNICODE_CHARACTER_CLASS);
 
-    private static final Pattern PATTERN_SENTENCE_END =
-            Pattern.compile("(?<sentence>[^\\.?!]+)((?<end>([\\.?!]+))|\\z)",
+    private static final Pattern PATTERN_SENTENCE =
+            Pattern.compile(MANAGER.getProperty("pattern.sentence"),
                     Pattern.UNICODE_CHARACTER_CLASS);
 
     private static final Pattern PATTERN_PARAGRAPH =
-            Pattern.compile("(?<par>[^\\r\\n]+)((?<endline>\\r\\n)|\\z)",
+            Pattern.compile(MANAGER.getProperty("pattern.paragraph"),
                     Pattern.UNICODE_CHARACTER_CLASS);
 
     public static String getAsString(String resource) throws IOException {
         BufferedReader br = new BufferedReader(
                 new InputStreamReader(
-                        TextParser.class.getClassLoader().getResourceAsStream(resource)));
+                        SimpleTextParser.class.getClassLoader().getResourceAsStream(resource)));
         StringBuilder sb = new StringBuilder();
         String line;
         while ((line = br.readLine()) != null) {
@@ -56,7 +59,7 @@ public class SimpleTextParser {
 
     public static Paragraph parseParagraph(String source) {
         Paragraph paragraph = new Paragraph();
-        Matcher sentenceMatcher = PATTERN_SENTENCE_END.matcher(source);
+        Matcher sentenceMatcher = PATTERN_SENTENCE.matcher(source);
         while (sentenceMatcher.find()) {
             Sentence sentence = null;
             if (sentenceMatcher.group(GROUP_SENTENCE) != null) {
@@ -69,7 +72,7 @@ public class SimpleTextParser {
     }
 
     public static Sentence parseSentence(String str) {
-        Matcher matcher = PATTERN_SENTENCE.matcher(str);
+        Matcher matcher = PATTERN_SENTENCE_PARTS.matcher(str);
         Sentence result = new Sentence();
         while (matcher.find()) {
             if (matcher.group(GROUP_WORD) != null) {

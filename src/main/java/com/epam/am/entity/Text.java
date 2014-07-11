@@ -1,37 +1,35 @@
 package com.epam.am.entity;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class Text implements DeepCloneable<Text> {
-    private final List<Paragraph> paragraphs;
+public class Text extends AbstractCompoundText<Paragraph> implements DeepCloneable<Text> {
 
     public Text(List<Paragraph> paragraphs) {
-        this.paragraphs = paragraphs;
+        super(paragraphs);
     }
 
     public Text() {
-        paragraphs = new ArrayList<>();
+        super();
     }
 
     public List<Paragraph> getParagraphs() {
-        return paragraphs;
+        return components;
     }
 
     public boolean add(Paragraph paragraph) {
-        return paragraphs.add(paragraph);
+        return components.add(paragraph);
     }
 
     @Override
     public String toString() {
         return "Text{" +
-                "paragraphs=" + paragraphs +
+                "paragraphs=" + components +
                 '}';
     }
 
     public String toOriginal() {
         StringBuilder sb = new StringBuilder();
-        for (Paragraph paragraph : paragraphs) {
+        for (Paragraph paragraph : components) {
             sb.append(paragraph.toOriginal());
         }
         return sb.toString();
@@ -44,20 +42,20 @@ public class Text implements DeepCloneable<Text> {
 
         Text text = (Text) o;
 
-        if (!paragraphs.equals(text.paragraphs)) return false;
+        if (!components.equals(text.components)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return paragraphs.hashCode();
+        return components.hashCode();
     }
 
     @Override
     public Text deepClone() {
         Text result = new Text();
-        for (Paragraph paragraph : paragraphs) {
+        for (Paragraph paragraph : components) {
             result.add(paragraph.deepClone());
         }
         return result;

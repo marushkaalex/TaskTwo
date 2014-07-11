@@ -1,6 +1,5 @@
 package com.epam.am.helper;
 
-import com.epam.am.entity.Character;
 import com.epam.am.entity.*;
 
 import java.util.*;
@@ -113,7 +112,6 @@ public class TextLogic {
         Text result = text.deepClone();
         for (Paragraph paragraph : result.getParagraphs()) {
             for (Sentence sentence : paragraph.getSentences()) {
-                System.out.println(sentence.toOriginal());
                 swapFirstAndLastWord(sentence);
             }
         }
@@ -137,7 +135,7 @@ public class TextLogic {
     public Paragraph getWordsSortedByLettersAsParagraph(Text text) {
         List<Word> words = getWords(text);
         sortWordsByLetters(words);
-        Character firstLetter = null;
+        Letter firstLetter = null;
         Word word;
         Sentence sentence = null;
         Paragraph result = new Paragraph();
@@ -195,8 +193,8 @@ public class TextLogic {
     //8
     public void sortWordsAlphabeticallyBySecondLetter(boolean isFirstLetterVowel, List<Word> list) {
         Collections.sort(list, (w1, w2) -> {
-            Character c1 = w1.new WordIterator().nextLetter(!isFirstLetterVowel);
-            Character c2 = w2.new WordIterator().nextLetter(!isFirstLetterVowel);
+            Letter c1 = w1.new WordIterator().nextLetter(!isFirstLetterVowel);
+            Letter c2 = w2.new WordIterator().nextLetter(!isFirstLetterVowel);
             if (c1 == null && c2 == null) return 0;
             if (c1 == null) return -1;
             if (c2 == null) return 1;
@@ -215,7 +213,7 @@ public class TextLogic {
     }
 
     //9
-    public void sortByLetterPerWord(Character letter, List<Word> words) {
+    public void sortByLetterPerWord(Letter letter, List<Word> words) {
         Collections.sort(words, (w1, w2) -> {
             float w1count = calculateLetterPerWord(letter, w1);
             float w2count = calculateLetterPerWord(letter, w2);
@@ -224,12 +222,12 @@ public class TextLogic {
     }
 
     public void sortByLetterPerWord(char c, List<Word> words) {
-        sortByLetterPerWord(new Character(c), words);
+        sortByLetterPerWord(new Letter(c), words);
     }
 
-    public float calculateLetterPerWord(Character letter, Word word) {
+    public float calculateLetterPerWord(Letter letter, Word word) {
         int letterCount = 0;
-        for (Character character : word) {
+        for (Letter character : word) {
             if (letter.equals(character)) letterCount++;
         }
         return (float) letterCount / word.length();
