@@ -1,10 +1,9 @@
 package com.epam.am;
 
+import com.epam.am.entity.Sentence;
 import com.epam.am.entity.Text;
-import com.epam.am.entity.Word;
-import com.epam.am.helper.PropertyManager;
 import com.epam.am.helper.TextLogic;
-import com.epam.am.parser.SimpleTextParser;
+import com.epam.am.parser.RegexTextParser;
 
 import java.io.IOException;
 
@@ -30,10 +29,8 @@ public class Runner {
     public static void main(String[] args) throws IOException {
 //        logic.sortWordsByVowelsCount(logic.getWords(text));
         TextLogic logic = new TextLogic();
-        Text text = SimpleTextParser.parseText("Жестокий, никогда не знавший любви, сирота Жан-Батист Гренуй настоящих успехов достиг лишь на одном поприще - среди парфюмеров ему никогда не было равных. По его духам сходит с ума весь высший свет, не подозревая о том, какой страшной ценой будет получен последний, идеальный аромат.");
-        Word a = new Word("Word");
-        System.out.println(a);
-        PropertyManager manager = PropertyManager.getManager(PropertyManager.REGEX);
-        System.out.println(manager.getProperty("group.par"));
+        Text text = new RegexTextParser().parseText("Жестокий, никогда не знавший любви, сирота Жан-Батист Гренуй настоящих успехов достиг лишь на одном поприще - среди парфюмеров ему никогда не было равных. По его духам сходит с ума весь высший свет, не подозревая о том, какой страшной ценой будет получен последний, идеальный аромат.");
+        Sentence sentence = new RegexTextParser().parseSentence("This is just a sentence. Simple sentence, that won't be parsed.");
+        System.out.println(sentence.toOriginal());
     }
 }

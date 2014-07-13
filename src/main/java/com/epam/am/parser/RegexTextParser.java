@@ -9,11 +9,10 @@ import java.io.InputStreamReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class SimpleTextParser {
-
-    private static final PropertyManager MANAGER = PropertyManager.getManager(PropertyManager.REGEX);
+public class RegexTextParser implements TextParser {
 
     public static final String TEXT = "text.txt";
+    private static final PropertyManager MANAGER = PropertyManager.getManager(PropertyManager.REGEX);
     private static final String GROUP_WORD = MANAGER.getProperty("group.word");
     private static final String GROUP_PUNCTUATION = MANAGER.getProperty("group.punct");
     private static final String GROUP_PARAGRAPH = MANAGER.getProperty("group.par");
@@ -33,10 +32,10 @@ public class SimpleTextParser {
             Pattern.compile(MANAGER.getProperty("pattern.paragraph"),
                     Pattern.UNICODE_CHARACTER_CLASS);
 
-    public static String getAsString(String resource) throws IOException {
+    public String getAsString(String resource) throws IOException {
         BufferedReader br = new BufferedReader(
                 new InputStreamReader(
-                        SimpleTextParser.class.getClassLoader().getResourceAsStream(resource)));
+                        RegexTextParser.class.getClassLoader().getResourceAsStream(resource)));
         StringBuilder sb = new StringBuilder();
         String line;
         while ((line = br.readLine()) != null) {
@@ -45,7 +44,7 @@ public class SimpleTextParser {
         return sb.toString();
     }
 
-    public static Text parseText(String source) {
+    public Text parseText(String source) {
         Text result = new Text();
         Matcher matcher = PATTERN_PARAGRAPH.matcher(source);
         while (matcher.find()) {
@@ -57,7 +56,7 @@ public class SimpleTextParser {
         return result;
     }
 
-    public static Paragraph parseParagraph(String source) {
+    public Paragraph parseParagraph(String source) {
         Paragraph paragraph = new Paragraph();
         Matcher sentenceMatcher = PATTERN_SENTENCE.matcher(source);
         while (sentenceMatcher.find()) {
@@ -71,18 +70,18 @@ public class SimpleTextParser {
         return paragraph;
     }
 
-    public static Sentence parseSentence(String str) {
+    public Sentence parseSentence(String str) {
         Matcher matcher = PATTERN_SENTENCE_PARTS.matcher(str);
         Sentence result = new Sentence();
         while (matcher.find()) {
             if (matcher.group(GROUP_WORD) != null) {
-                result.add(new Word(matcher.group()));
+                result.add(new Word(matcher.group(GROUP_WORD)));
             }
             if (matcher.group(GROUP_WHITESPACE) != null) {
                 result.add(WhiteSpace.getInstance());
             }
             if (matcher.group(GROUP_PUNCTUATION) != null) {
-                result.add(new PunctuationMark(matcher.group()));
+                result.add(new PunctuationMark(matcher.group(GROUP_PUNCTUATION)));
             }
         }
         return result;
